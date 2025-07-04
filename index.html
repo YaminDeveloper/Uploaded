@@ -173,7 +173,7 @@
 
 <script>
 // --- Password Protection & Cookie Management ---
-const hashedPasswords = ["fae5878d2bbca96a99d269cc2e0e4b6cf94a77df97b83d42fcac222ad32a9e75", "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2"];
+const hashedPasswords = ["fae5878d2bbca96a99d269cc2e0e4b6cf94a77df97b83d42fcac222ad32a9e75", "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2", "3c1e4f6bf2dd2682c9c6b533b9169d5aedd1104a8331eae8b8d57862b907b164"];
 async function hashPassword(password) { const e = new TextEncoder,t = e.encode(password),n = await crypto.subtle.digest("SHA-256",t);return Array.from(new Uint8Array(n)).map((e=>e.toString(16).padStart(2,"0"))).join("") }
 function setCookie(e,t,n){let o="";if(n){var a=new Date;a.setTime(a.getTime()+24*n*60*60*1e3),o="; expires="+a.toUTCString()}document.cookie=e+"="+(t||"")+o+"; path=/"}function getCookie(e){let t=e+"=";for(var n=document.cookie.split(";"),o=0;o<n.length;o++){for(var a=n[o];" "==a.charAt(0);)a=a.substring(1,a.length);if(0==a.indexOf(t))return a.substring(t.length,a.length)}return null}
 async function checkPassword(){const e=document.getElementById("password").value,t=await hashPassword(e);hashedPasswords.includes(t)?(setCookie("passwordProtected","true",30),document.getElementById("protected-content").style.display="block",document.getElementById("password-form").style.display="none"):alert("Incorrect password. Please try again.")}
