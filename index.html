@@ -2,82 +2,406 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Secure File Uploader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <title>Post Generator Tool</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f9; }
-        .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 500px; }
-        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { opacity: 0.8; }
-        .status { margin-top: 10px; font-weight: bold; }
+      body { font-family: sans-serif; background-color: #f0f2f5; padding: 1rem; }
+      .container, .card { margin-left: auto; margin-right: auto; }
+      .card {
+        max-width: 400px;
+        width: 100%;
+        padding: 2rem;
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background-color: white;
+      }
+      #protected-content { display: none; }
+      .form-section { display: none; }
+      .form { display: flex; flex-direction: column; }
+      input[type="text"], input[type="number"], input[type="password"], textarea, select { padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; background: #f9f9f9; font-size: 16px; width: 100%; box-sizing: border-box; }
+      input[type="file"] { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; background: #f9f9f9; font-size: 14px; width: 100%; box-sizing: border-box;}
+      .upload-button { background-color: #0d6efd; color: white; padding: 8px 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 5px; display: inline-block; }
+      .upload-button:hover { opacity: 0.8; }
+      .status-message { font-size: 0.9em; margin-top: 5px; }
+      .warning-message { color: red; display: none; margin-top: 5px; font-size: 0.9em; }
+      .resolution-container { display: flex; gap: 10px; align-items: center; }
+      .resolution-container input[type="number"] { flex: 1; }
+      input[type="submit"] { background-color: #198754; color: white; padding: 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 18px; }
+      input[type="submit"]:hover { opacity: 0.8; }
+      .generated-code-section { margin-top: 20px; display: none; }
+      #copyButton { margin-top: 10px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; }
+      #copyButton:hover { background-color: #0056b3; }
+      pre { background-color: #e9ecef; padding: 1rem; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Upload a file to GitHub Securely</h1>
-        <input type="file" id="file-upload" />
-        <button id="upload-button">Upload File</button>
-        <div id="status" class="status"></div>
-        <input type="text" id="file-url" placeholder="Uploaded file URL will appear here" readonly />
+
+<div class="card text-center" id="password-form">
+  <h4 class="mb-4"><i class="bi bi-shield-lock-fill text-primary"></i> Protected Tool</h4>
+  <p>This tool is for contributors only.</p>
+  <div class="mb-3">
+    <input id="password" type="password" class="form-control" placeholder="Enter password" />
+  </div>
+  <button class="btn btn-primary w-100" onclick="checkPassword()">
+    <i class="bi bi-unlock"></i> Unlock
+  </button>
+</div>
+
+<div id="protected-content">
+  <div class="container bg-white p-4 rounded-3 shadow-sm">
+    <h1 class="text-center mb-4">Post Generator</h1>
+
+    <div class="mb-3">
+        <label for="file-type-selector" class="form-label">Select File Category:</label>
+        <select id="file-type-selector" class="form-select">
+            <option value="" selected>-- Select Category --</option>
+            <option value="mobile">Mobile Files</option>
+            <option value="computer">Computer Files</option>
+        </select>
     </div>
 
-    <script>
-        const uploadButton = document.getElementById('upload-button');
-        const fileUploadInput = document.getElementById('file-upload');
-        const statusDiv = document.getElementById('status');
-        const fileUrlInput = document.getElementById('file-url');
+    <div id="mobile-form-section" class="form-section">
+        <h2 class="mt-4">Mobile Files Generator</h2>
+        <form class="form" id="postFormMobile">
+            <label for="post-title-mobile">Post Title:</label>
+            <input type="text" id="post-title-mobile" placeholder="Enter Post Title" required>
 
-        uploadButton.addEventListener('click', async () => {
-            const file = fileUploadInput.files[0];
-            if (!file) {
-                statusDiv.textContent = 'Please select a file first.';
-                statusDiv.style.color = 'red';
+            <label for="image-url-mobile">Image URL:</label>
+            <input type="text" id="image-url-mobile" placeholder="Enter Image URL or Upload" required>
+            <input type="file" id="image-upload-mobile" accept="image/*">
+            <button type="button" id="trigger-image-upload-mobile" class="upload-button">Upload Image</button>
+            <div id="image-upload-status-mobile" class="status-message"></div>
+
+            <label for="license-mobile">License Type:</label>
+            <select id="license-mobile" required>
+                <option value="Premium">Premium</option>
+                <option value="Free">Free</option>
+            </select>
+
+            <div class="price-box" id="price-box-mobile">
+              <label for="price-mobile">Price (BDT):</label>
+              <input type="number" id="price-mobile" value="50">
+            </div>
+
+            <div class="download-link-box" id="download-link-box-mobile" style="display: none;">
+                <label for="download-link-mobile">Download Link:</label>
+                <input type="text" id="download-link-mobile" placeholder="Enter Download Link or Upload">
+                <input type="file" id="file-upload-mobile">
+                <button type="button" id="trigger-file-upload-mobile" class="upload-button">Upload File</button>
+                <div id="file-upload-status-mobile" class="status-message"></div>
+            </div>
+
+            <input type="submit" value="Generate Mobile Post">
+        </form>
+    </div>
+
+    <div id="computer-form-section" class="form-section">
+        <h2 class="mt-4">Computer Files Generator</h2>
+        <form class="form" id="postFormComputer">
+             <label for="post-title-computer">Post Title:</label>
+            <input type="text" id="post-title-computer" placeholder="Enter Post Title" required>
+
+            <label for="image-url-computer">Image URL:</label>
+            <input type="text" id="image-url-computer" placeholder="Enter Image URL or Upload" required>
+            <input type="file" id="image-upload-computer" accept="image/*">
+            <button type="button" id="trigger-image-upload-computer" class="upload-button">Upload Image</button>
+            <div id="image-upload-status-computer" class="status-message"></div>
+
+            <label for="license-computer">License Type:</label>
+            <select id="license-computer" required>
+                <option value="Premium">Premium</option>
+                <option value="Free">Free</option>
+            </select>
+
+            <div class="price-box" id="price-box-computer">
+              <label for="price-computer">Price (BDT):</label>
+              <input type="number" id="price-computer" value="50">
+            </div>
+
+            <div class="download-link-box" id="download-link-box-computer" style="display: none;">
+                <label for="download-link-computer">Download Link:</label>
+                <input type="text" id="download-link-computer" placeholder="Enter Download Link or Upload">
+                <input type="file" id="file-upload-computer">
+                <button type="button" id="trigger-file-upload-computer" class="upload-button">Upload File</button>
+                <div id="file-upload-status-computer" class="status-message"></div>
+            </div>
+            
+            <input type="submit" value="Generate Computer Post">
+        </form>
+    </div>
+
+    <div class="generated-code-section" id="generatedCodeSection">
+      <h3 class="mt-5">Generated Post Code:</h3>
+      <button id="copyButton">COPY</button>
+      <pre><code id="outputCode"></code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- Password Protection & Cookie Management ---
+const hashedPasswords = [
+  "fae5878d2bbca96a99d269cc2e0e4b6cf94a77df97b83d42fcac222ad32a9e75",
+  "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2"
+];
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function setCookie(name, value, days) {
+  let expires = "";
+  if (days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+async function checkPassword() {
+  const password = document.getElementById("password").value;
+  const hashedInput = await hashPassword(password);
+  if (hashedPasswords.includes(hashedInput)) {
+    setCookie("passwordProtected", "true", 30);
+    document.getElementById("protected-content").style.display = "block";
+    document.getElementById("password-form").style.display = "none";
+  } else {
+    alert("Incorrect password. Please try again.");
+  }
+}
+
+function checkCookie() {
+  if (getCookie("passwordProtected")) {
+    document.getElementById("protected-content").style.display = "block";
+    document.getElementById("password-form").style.display = "none";
+  }
+}
+
+// --- Secure GitHub Upload via Netlify Function ---
+async function uploadFileSecurely(file, pathInRepo, commitMessage) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async () => {
+            try {
+                const base64Content = reader.result.split(',')[1];
+                const response = await fetch('/.netlify/functions/uploadToGitHub', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        fileContent: base64Content,
+                        pathInRepo: pathInRepo,
+                        commitMessage: commitMessage
+                    }),
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || 'Upload via server failed.');
+                }
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        };
+        reader.onerror = (error) => reject(new Error('Failed to read file.'));
+    });
+}
+
+// --- Image Resizing Utility ---
+function resizeAndConvertImage(file, targetWidth, targetHeight, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    const resizedFile = new File([blob], file.name, { type: 'image/jpeg' });
+                    callback(resizedFile, null);
+                } else {
+                    callback(null, "Failed to convert canvas to Blob.");
+                }
+            }, 'image/jpeg', 0.9);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function sanitizeFilename(filename) {
+    return filename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
+}
+
+// --- File Upload Listeners Setup (Secure Version) ---
+function setupFileUploadListeners(type) {
+    // Image Upload
+    const imageUploadInput = document.getElementById(`image-upload-${type}`);
+    const triggerImageUploadButton = document.getElementById(`trigger-image-upload-${type}`);
+    const imageUrlInput = document.getElementById(`image-url-${type}`);
+    const imageUploadStatus = document.getElementById(`image-upload-status-${type}`);
+
+    triggerImageUploadButton.addEventListener('click', () => {
+        const file = imageUploadInput.files[0];
+        if (!file) {
+            imageUploadStatus.textContent = 'Please select an image file first.';
+            imageUploadStatus.style.color = 'red';
+            return;
+        }
+        imageUploadStatus.textContent = 'Resizing and uploading...';
+        imageUploadStatus.style.color = 'blue';
+
+        resizeAndConvertImage(file, 1280, 1280, async (resizedFile, error) => {
+            if (error) {
+                imageUploadStatus.textContent = `Error: ${error}`;
                 return;
             }
+            const uniqueFilename = Date.now() + '-' + sanitizeFilename(resizedFile.name);
+            const pathInRepo = `images/${type}/${uniqueFilename}`;
+            const commitMessage = `Upload ${type} image: ${uniqueFilename}`;
 
-            statusDiv.textContent = 'Reading file...';
-            statusDiv.style.color = 'blue';
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                try {
-                    const base64Content = reader.result.split(',')[1];
-                    const uniqueFilename = Date.now() + '-' + file.name.replace(/\s+/g, '_');
-                    const pathInRepo = `uploads/${uniqueFilename}`;
-                    const commitMessage = `Upload file: ${uniqueFilename}`;
-
-                    statusDiv.textContent = 'Uploading... Please wait.';
-                    statusDiv.style.color = 'blue';
-
-                    const response = await fetch('/.netlify/functions/uploadToGitHub', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            fileContent: base64Content,
-                            pathInRepo: pathInRepo,
-                            commitMessage: commitMessage
-                        }),
-                    });
-
-                    const result = await response.json();
-
-                    if (!response.ok) throw new Error(result.message);
-
-                    statusDiv.textContent = 'Upload successful!';
-                    statusDiv.style.color = 'green';
-                    fileUrlInput.value = result.rawUrl;
-
-                } catch (error) {
-                    statusDiv.textContent = `Error: ${error.message}`;
-                    statusDiv.style.color = 'red';
-                }
-            };
-            reader.onerror = () => {
-                statusDiv.textContent = 'Failed to read file.';
-                statusDiv.style.color = 'red';
-            };
+            try {
+                const result = await uploadFileSecurely(resizedFile, pathInRepo, commitMessage);
+                imageUrlInput.value = result.rawUrl;
+                imageUploadStatus.textContent = 'Image uploaded successfully!';
+                imageUploadStatus.style.color = 'green';
+            } catch (uploadError) {
+                imageUploadStatus.textContent = `Upload failed: ${uploadError.message}`;
+                imageUploadStatus.style.color = 'red';
+            }
         });
-    </script>
+    });
+
+    // Downloadable File Upload
+    const fileUploadInput = document.getElementById(`file-upload-${type}`);
+    const triggerFileUploadButton = document.getElementById(`trigger-file-upload-${type}`);
+    const downloadLinkInput = document.getElementById(`download-link-${type}`);
+    const fileUploadStatus = document.getElementById(`file-upload-status-${type}`);
+
+    if (triggerFileUploadButton) {
+        triggerFileUploadButton.addEventListener('click', async () => {
+            const file = fileUploadInput.files[0];
+            if (!file) {
+                fileUploadStatus.textContent = 'Please select a file first.';
+                fileUploadStatus.style.color = 'red';
+                return;
+            }
+            fileUploadStatus.textContent = 'Uploading file...';
+            fileUploadStatus.style.color = 'blue';
+
+            const uniqueFilename = Date.now() + '-' + sanitizeFilename(file.name);
+            const pathInRepo = `downloads/${type}/${uniqueFilename}`;
+            const commitMessage = `Upload ${type} free file: ${uniqueFilename}`;
+
+            try {
+                const result = await uploadFileSecurely(file, pathInRepo, commitMessage);
+                downloadLinkInput.value = result.rawUrl;
+                fileUploadStatus.textContent = 'File uploaded successfully!';
+                fileUploadStatus.style.color = 'green';
+            } catch (uploadError) {
+                fileUploadStatus.textContent = `Upload failed: ${uploadError.message}`;
+                fileUploadStatus.style.color = 'red';
+            }
+        });
+    }
+}
+
+// --- Form Logic ---
+function handleLicenseChange(type) {
+    const licenseField = document.getElementById(`license-${type}`);
+    const priceBox = document.getElementById(`price-box-${type}`);
+    const downloadLinkBox = document.getElementById(`download-link-box-${type}`);
+    
+    if (licenseField.value === 'Free') {
+        priceBox.style.display = 'none';
+        downloadLinkBox.style.display = 'block';
+    } else {
+        priceBox.style.display = 'block';
+        downloadLinkBox.style.display = 'none';
+    }
+}
+
+function handleFormSubmit(e, type) {
+    e.preventDefault();
+    const postTitle = document.getElementById(`post-title-${type}`).value;
+    const imageUrl = document.getElementById(`image-url-${type}`).value;
+    // ... (rest of your form data gathering logic) ...
+
+    const generatedCode = `
+<div class="post-container">
+    <img src="${imageUrl}" alt="${postTitle}" style="width:100%; max-width:600px;">
+    <h2>${postTitle}</h2>
+    <p>More details here...</p>
+    </div>`;
+
+    document.getElementById('outputCode').textContent = generatedCode.trim();
+    document.getElementById('generatedCodeSection').style.display = 'block';
+    document.getElementById('copyButton').style.display = 'inline-block';
+}
+
+// --- Initialization ---
+function initializeForm(type) {
+    document.getElementById(`postForm${type.charAt(0).toUpperCase() + type.slice(1)}`)
+        .addEventListener('submit', (e) => handleFormSubmit(e, type));
+    
+    document.getElementById(`license-${type}`)
+        .addEventListener('change', () => handleLicenseChange(type));
+
+    handleLicenseChange(type);
+    setupFileUploadListeners(type);
+}
+
+document.getElementById('file-type-selector').addEventListener('change', function() {
+    const selectedType = this.value;
+    const mobileForm = document.getElementById('mobile-form-section');
+    const computerForm = document.getElementById('computer-form-section');
+    
+    mobileForm.style.display = 'none';
+    computerForm.style.display = 'none';
+
+    if (selectedType === 'mobile') {
+        mobileForm.style.display = 'block';
+        initializeForm('mobile');
+    } else if (selectedType === 'computer') {
+        computerForm.style.display = 'block';
+        initializeForm('computer');
+    }
+});
+
+document.getElementById("copyButton").addEventListener("click", function () {
+    const codeText = document.getElementById("outputCode").textContent;
+    navigator.clipboard.writeText(codeText).then(() => {
+        this.textContent = "Copied!";
+        setTimeout(() => (this.textContent = "COPY"), 2000);
+    });
+});
+
+// Run on page load
+window.onload = function () {
+  checkCookie();
+};
+
+</script>
 </body>
 </html>
