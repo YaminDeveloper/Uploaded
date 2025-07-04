@@ -42,10 +42,10 @@
   <button class="btn btn-primary w-100 mb-2" onclick="checkPassword()">
     <i class="bi bi-unlock"></i> Unlock
   </button>
-  <a href="signup.html" class="btn btn-outline-secondary w-100 mb-2">
+  <a href="https://www.designlabofficial.site/p/signup.html" target="_blank" class="btn btn-outline-secondary w-100 mb-2">
     <i class="bi bi-person-plus-fill"></i> Sign Up
   </a>
-  <a href="contributor-join.html" class="btn btn-outline-secondary w-100">
+  <a href="https://www.designlabofficial.site/p/contributor.html" target="_blank" class="btn btn-outline-secondary w-100">
     <i class="bi bi-person-add"></i> Contributor Join
   </a>
 </div>
@@ -213,7 +213,8 @@ function resizeAndConvertImage(file, targetWidth, targetHeight, callback) {
         const img = new Image();
         img.onload = () => {
             const canvas = document.createElement('canvas');
-            canvas.width = targetWidth; canvas.height = targetHeight;
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, targetWidth, targetHeight);
             canvas.toBlob((blob) => {
@@ -278,9 +279,16 @@ function setupFileUploadListeners(type) {
         commonUploadHandler(file, 'images', document.getElementById(`image-upload-status-${type}`), document.getElementById(`image-url-${type}`), true);
     });
 
-    if (document.getElementById(`trigger-file-upload-${type}`)) {
-        document.getElementById(`trigger-file-upload-${type}`).addEventListener('click', () => {
+    const triggerFileUploadButton = document.getElementById(`trigger-file-upload-${type}`);
+    if (triggerFileUploadButton) {
+        triggerFileUploadButton.addEventListener('click', () => {
             const file = document.getElementById(`file-upload-${type}`).files[0];
+            const warningDiv = document.getElementById(`file-size-warning-${type}`);
+            if(file && file.size > 100 * 1024 * 1024) {
+                if(warningDiv) warningDiv.style.display = 'block';
+                return;
+            }
+            if(warningDiv) warningDiv.style.display = 'none';
             commonUploadHandler(file, 'downloads', document.getElementById(`file-upload-status-${type}`), document.getElementById(`download-link-${type}`), false);
         });
     }
@@ -314,15 +322,12 @@ function handleFormSubmit(e, type) {
     const downloadLink = license === 'Free' ? document.getElementById(`download-link-${type}`).value : '';
     const vectorId = generateVectorId();
     let buttonCode;
-    if (license === 'Free') { if (!downloadLink) { alert("Please provide a Download Link for Free items."); return; } buttonCode = `<a class='button safeL' href='${downloadLink}' target='_blank' rel='noopener noreferrer'><i class='bi bi-download'></i>Free Download</a>`; } else { buttonCode = `<a class='button' href='/p/buy-design.html?victorId=${vectorId}&taka=${price.replace(' BDT', '')}&title=${encodeURIComponent(postTitle)}'><i class='bi bi-cart-check-fill'></i>Buy Now!</a>`; }
+    if (license === 'Free') { if (!downloadLink) { alert("Please provide a Download Link for Free items."); return; } buttonCode = `<a class='button safeL' style="max-width:100%;width:100%;margin-right:10px;justify-content:center" href='${downloadLink}' target='_blank' rel='noopener noreferrer'><i class='bi bi-download'></i>Free Download</a>`; } else { buttonCode = `<a class='button' style="max-width:100%;width:100%;margin-right:10px;justify-content:center" href='/p/buy-design.html?victorId=${vectorId}&taka=${price.replace(' BDT', '')}&title=${encodeURIComponent(postTitle)}'><i class='bi bi-cart-check-fill'></i>Buy Now!</a>`; }
     
-    let specificContent = ""; // Your detailed specificContent logic goes here...
-    const commonFontContent = `<img class='pageImg' alt="How to Download Fonts" src="https://cloud.plpfiles.com/assets/images/download.svg"/><p>Welcome to our website...[rest of font content]...</p>`;
-    if (type === "mobile") {
-        specificContent = (selectedMainFormat === 'Fonts') ? commonFontContent : `<div style='text-align:center'><p>Mobile specific content...</p></div>`;
-    } else if (type === "computer") {
-        specificContent = (selectedMainFormat === 'Fonts') ? commonFontContent : `<div style='text-align:center'><p>Computer specific content...</p></div>`;
-    }
+    let specificContent = "";
+    const commonFontContent = `<img class='pageImg' alt="How to Download Free and Premium Font (TTF, OTF, WOFF, EOT) and SVG Files" src="https://cloud.plpfiles.com/assets/images/download.svg"/><p>Welcome to our website, where you can access both free and premium TTF, OTF, WOFF, EOT (font files), and SVG (vector graphics) files for your graphic design projects.</p><h2>Downloading Free TTF, OTF, WOFF, EOT, and SVG Files</h2><p>Downloading free font and SVG files from our website is incredibly easy...</p><ol class='unordered'><li>Browse our collection to find the file you need.</li><li>Click the "Download" button associated with the file.</li><li>The file will begin downloading to your device immediately.</li></ol><p>It's that simple!</p><h2>Purchasing Premium TTF, OTF, WOFF, EOT, and SVG Files</h2><p>If you're interested in our premium font and SVG files, here's how...</p><ol class='unordered'><li>Find the premium file you wish to purchase from our collection.</li><li>Click the "Buy Now" button.</li><li>Follow the instructions to send the payment using the provided methods.</li><li>Provide us with the transaction code or a screenshot of the payment confirmation.</li><li>Once confirmed, you will receive the file via email.</li></ol><p>We strive to make the process smooth and efficient.</p><h2>Why Choose Our Font and SVG Files?</h2><p>Our website offers a wide variety of high-quality fonts (TTF, OTF, WOFF, EOT) and scalable vector graphics (SVG) to enhance your creative projects.</p><h2>Have Questions?</h2><p>If you have any questions, please visit our <a href="/p/contact.html">Support Page</a>.</p><style>.headH::after{content:'${categories}'}</style>`;
+    if (type === "mobile") { if (selectedMainFormat === 'Fonts') { specificContent = `<div style='text-align:center'><div class="button-box"><a class="button" href="/p/import-fonts-in-pixellab-and-designlab.html"><svg class='line' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12' stroke-miterlimit='10'/><path d='M22 2L13.8 10.2'/><path d='M13 6.17004V11H17.83'/></svg><span>How To Import Fonts In Pixellab And DesignLab</span></a></div></div>${commonFontContent}`; } else { specificContent = `<div style='text-align:center'><div class="button-box"><a class="button" href="/p/how-to-import-plp-ipv-files.html"><svg class='line' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12' stroke-miterlimit='10'/><path d='M22 2L13.8 10.2'/><path d='M13 6.17004V11H17.83'/></svg><span>How to Import PLP IPV File?</span></a><a class="button" href="/p/how-to-download-free-and-premium-files.html"><svg class='line' viewBox='0 0 24 24'><polyline points='8 17 12 21 16 17'/><line x1='12' x2='12' y1='12' y2='21'/><path d='M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29'/></svg><span>How to Download?</span></a></div></div><img class='pageImg' alt="How to Import PLP IPV Files into PixelLab and Ibis Paint X" src='https://cloud.plpfiles.com/assets/images/server.svg'/><p><strong>PixelLab</strong> and <strong>Ibis Paint X</strong> are two of the most popular mobile graphic design apps...[rest of mobile content]...</p><style>.headH::after{content:'${categories}'}</style>`; }
+    } else if (type === "computer") { if (selectedMainFormat === 'Fonts') { specificContent = commonFontContent; } else { specificContent = `<div style='text-align:center'><div class="button-box"><a class="button" href="/p/how-to-download-free-and-premium-files.html"><svg class='line' viewBox='0 0 24 24'><polyline points='8 17 12 21 16 17'/><line x1='12' x2='12' y1='12' y2='21'/><path d='M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29'/></svg><span>How to Download?</span></a></div></div><img class='pageImg' alt="How to Download Free and Premium PSD EPS AI Files" src="https://cloud.plpfiles.com/assets/images/download.svg"/><p>Welcome to our website, where you can access both free and premium <strong>PSD, EPS, and AI</strong> files...[rest of computer content]...</p><style>.headH::after{content:'${categories}'}</style>`; } }
 
     const generatedCode = `\n<meta name="keywords" content="${relatedTags}">\n<meta name="description" content="${searchDescription}" />\n<div hidden aria-hidden='true'>${relatedTags}</div>\n<div class="flex-container">\n    <div class="image-section"><div class='img-view separator'><img alt='${postTitle}' src='${imageUrl}'/></div></div>\n    <div class="details-section">\n        <div class="plp-details-container">\n            ${softwareDetailHTML}\n            ${resolutionDetailHTML}\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-tag-fill"></i></div><div class="detail-text"><span class="category">Price</span><span class="value">${price}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-file-earmark-zip-fill"></i></div><div class="detail-text"><span class="category">Size</span><span class="value">${fileSize}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-person-fill"></i></div><div class="detail-text"><span class="category">Contributor</span><span class="value"><a href='${contributorUrl}'>${contributor}</a></span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-bookmark-fill"></i></div><div class="detail-text"><span class="category">Category</span><span class="value"><a href="/search/label/${categories}">${categories}</a></span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-file-earmark-font-fill"></i></div><div class="detail-text"><span class="category">Format</span><span class="value">${formatsValueForDisplay}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-calendar-check-fill"></i></div><div class="detail-text"><span class="category">Date</span><span class="value">${uploadDate}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-patch-check-fill"></i></div><div class="detail-text"><span class="category">License</span><span class="value">${license}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-upc"></i></div><div class="detail-text"><span class="category">Vector ID</span><span class="value">${vectorId}</span></div></div>\n        </div>\n        <div class="download-box">${buttonCode}</div>\n    </div>\n</div>\n${specificContent}\n`;
     document.getElementById('outputCode').textContent = generatedCode.trim();
