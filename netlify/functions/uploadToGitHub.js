@@ -11,8 +11,9 @@ exports.handler = async (event) => {
 
     if (!GITHUB_TOKEN) throw new Error("GitHub Token not configured.");
 
-    const GITHUB_USERNAME = "YourGitHubUsername"; // আপনার ইউজারনেম দিন
-    const GITHUB_REPO = "your-repo-name";      // আপনার রিপোজিটরির নাম
+    // আপনার ইউজারনেম এবং রিপোজিটরির নাম এখানে আপডেট করা হয়েছে
+    const GITHUB_USERNAME = "YaminDeveloper";
+    const GITHUB_REPO = "Uploaded";
     const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${pathInRepo}`;
 
     const requestBody = {
