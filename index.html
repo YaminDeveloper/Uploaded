@@ -5,36 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
-    <title>Post Generator Tool</title>
+    <title>Secure Post Generator</title>
     <style>
-      body { font-family: sans-serif; background-color: #f0f2f5; padding: 1rem; }
-      .container, .card { margin-left: auto; margin-right: auto; }
-      .card {
-        max-width: 400px;
-        width: 100%;
-        padding: 2rem;
-        border: none;
-        border-radius: 1rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        background-color: white;
-      }
-      #protected-content { display: none; }
-      .form-section { display: none; }
-      .form { display: flex; flex-direction: column; }
-      input[type="text"], input[type="number"], input[type="password"], textarea, select { padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; background: #f9f9f9; font-size: 16px; width: 100%; box-sizing: border-box; }
-      input[type="file"] { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; background: #f9f9f9; font-size: 14px; width: 100%; box-sizing: border-box;}
-      .upload-button { background-color: #0d6efd; color: white; padding: 8px 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 5px; display: inline-block; }
-      .upload-button:hover { opacity: 0.8; }
-      .status-message { font-size: 0.9em; margin-top: 5px; }
-      .warning-message { color: red; display: none; margin-top: 5px; font-size: 0.9em; }
-      .resolution-container { display: flex; gap: 10px; align-items: center; }
-      .resolution-container input[type="number"] { flex: 1; }
-      input[type="submit"] { background-color: #198754; color: white; padding: 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 18px; }
-      input[type="submit"]:hover { opacity: 0.8; }
-      .generated-code-section { margin-top: 20px; display: none; }
-      #copyButton { margin-top: 10px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; }
-      #copyButton:hover { background-color: #0056b3; }
-      pre { background-color: #e9ecef; padding: 1rem; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
+        body { font-family: sans-serif; background-color: #f0f2f5; padding: 1rem; }
+        .container, .card { margin-left: auto; margin-right: auto; }
+        .card { max-width: 400px; width: 100%; padding: 2rem; border: none; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); background-color: white; margin-top: 2rem; }
+        #protected-content { display: none; }
+        .form-section { display: none; }
+        .form { display: flex; flex-direction: column; }
+        input, select, textarea { padding: 10px; margin: 5px 0 15px 0; border-radius: 5px; border: 1px solid #ccc; background: #f9f9f9; font-size: 16px; width: 100%; box-sizing: border-box; }
+        .upload-button { background-color: #0d6efd; color: white; padding: 8px 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 5px; display: inline-block; }
+        .upload-button:hover { opacity: 0.8; }
+        .status-message { font-size: 0.9em; margin-top: 5px; }
+        .warning-message { color: red; display: none; margin-top: 5px; font-size: 0.9em; }
+        .resolution-container { display: flex; gap: 10px; align-items: center; }
+        .resolution-container input[type="number"] { flex: 1; }
+        input[type="submit"] { background-color: #198754; color: white; padding: 12px; border: 0; border-radius: 5px; cursor: pointer; font-size: 18px; margin-top: 15px;}
+        input[type="submit"]:hover { opacity: 0.8; }
+        .generated-code-section { margin-top: 20px; display: none; }
+        #copyButton { margin-top: 10px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; }
+        #copyButton:hover { background-color: #0056b3; }
+        pre { background-color: #e9ecef; padding: 1rem; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; }
+        .details-section-wrapper { max-width: 800px; margin: 0 auto; }
+        .details-section { text-align: center; background: white; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; }
+        .lottie-container { max-width: 300px; margin: 0 auto; }
     </style>
 </head>
 <body>
@@ -45,14 +39,32 @@
   <div class="mb-3">
     <input id="password" type="password" class="form-control" placeholder="Enter password" />
   </div>
-  <button class="btn btn-primary w-100" onclick="checkPassword()">
+  <button class="btn btn-primary w-100 mb-2" onclick="checkPassword()">
     <i class="bi bi-unlock"></i> Unlock
   </button>
+  <a href="signup.html" class="btn btn-outline-secondary w-100 mb-2">
+    <i class="bi bi-person-plus-fill"></i> Sign Up
+  </a>
+  <a href="contributor-join.html" class="btn btn-outline-secondary w-100">
+    <i class="bi bi-person-add"></i> Contributor Join
+  </a>
 </div>
 
 <div id="protected-content">
-  <div class="container bg-white p-4 rounded-3 shadow-sm">
+  <div class="container bg-white p-4 p-md-5 rounded-3 shadow-sm">
+    <div class="lottie-container">
+      <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+      <dotlottie-player src="https://lottie.host/fc869a6d-6d03-4809-be43-d696d0446829/HyiiJ4A7An.json" background="transparent" speed="1" style="width: 100%; height: auto;" loop autoplay></dotlottie-player>
+    </div>
+    
+    <div class="details-section-wrapper">
+        <div class="details-section">
+            <p>The Post Generator is a handy tool for graphic designers and bloggers. This generator simplifies the process of creating posts by allowing users to enter essential information for mobile and computer design files. You can now also upload images and free files directly and securely to GitHub.</p>
+        </div>
+    </div>
+
     <h1 class="text-center mb-4">Post Generator</h1>
+    <hr>
 
     <div class="mb-3">
         <label for="file-type-selector" class="form-label">Select File Category:</label>
@@ -64,77 +76,95 @@
     </div>
 
     <div id="mobile-form-section" class="form-section">
-        <h2 class="mt-4">Mobile Files Generator</h2>
-        <form class="form" id="postFormMobile">
+        <h2 class="mt-4 border-bottom pb-2">Mobile Files Generator</h2>
+        <form class="form" id="postFormMobile" onsubmit="handleFormSubmit(event, 'mobile')">
             <label for="post-title-mobile">Post Title:</label>
             <input type="text" id="post-title-mobile" placeholder="Enter Post Title" required>
-
             <label for="image-url-mobile">Image URL:</label>
             <input type="text" id="image-url-mobile" placeholder="Enter Image URL or Upload" required>
             <input type="file" id="image-upload-mobile" accept="image/*">
             <button type="button" id="trigger-image-upload-mobile" class="upload-button">Upload Image</button>
             <div id="image-upload-status-mobile" class="status-message"></div>
-
             <label for="license-mobile">License Type:</label>
             <select id="license-mobile" required>
                 <option value="Premium">Premium</option>
                 <option value="Free">Free</option>
             </select>
-
             <div class="price-box" id="price-box-mobile">
               <label for="price-mobile">Price (BDT):</label>
               <input type="number" id="price-mobile" value="50">
             </div>
-
-            <div class="download-link-box" id="download-link-box-mobile" style="display: none;">
+            <div class="download-link-box" id="download-link-box-mobile">
                 <label for="download-link-mobile">Download Link:</label>
                 <input type="text" id="download-link-mobile" placeholder="Enter Download Link or Upload">
                 <input type="file" id="file-upload-mobile">
                 <button type="button" id="trigger-file-upload-mobile" class="upload-button">Upload File</button>
                 <div id="file-upload-status-mobile" class="status-message"></div>
+                <div id="file-size-warning-mobile" class="warning-message">Your file size is too large (max 100MB). Upload it to Google Drive and enter the link in the box above.</div>
             </div>
+            <label for="formats-mobile">File Formats:</label><select id="formats-mobile" required><option disabled selected hidden value="">Select File Type</option><option value="PLP">PLP</option><option value="IPV">IPV</option><option value="JPG">JPG</option><option value="PNG">PNG</option><option value="Fonts">Fonts</option></select>
+            <div id="font-type-box-mobile" style="display: none;"><label for="font-type-mobile">Font Type:</label><select id="font-type-mobile"><option value="TTF">TTF</option><option value="OTF">OTF</option><option value="WOFF">WOFF</option><option value="EOT">EOT</option><option value="SVG">SVG</option></select></div>
+            <div id="software-field-wrapper-mobile"><label for="software-mobile">Software:</label><select id="software-mobile" required><option disabled selected hidden value="">Select App Name</option><option value="PixelLab">PixelLab App</option><option value="DesignLab">DesignLab App</option><option value="Ibis Paint X">Ibis Paint X</option></select></div>
+            <div id="resolution-field-wrapper-mobile"><label for="resolution-mobile">Resolution:</label><select id="resolution-mobile" required><option disabled selected hidden value="">Select Resolutions</option><option value="High Quality">High Quality</option><option value="Medium Quality">Medium Quality</option><option value="Low Quality">Low Quality</option></select></div>
+            <label for="file-size-input-mobile">Size:</label><div class="resolution-container"><input type="number" id="file-size-input-mobile" placeholder="Enter file size" required><select id="file-size-unit-mobile" required><option value="MB">MB</option><option value="KB">KB</option></select></div>
+            <label for="contributor-mobile">Contributor Name:</label><select id="contributor-mobile" required><option disabled selected hidden value="">Select Your Name</option><option value="Yamin Ahmed">Yamin Ahmed</option><option value="Nafich Shikdar">Nafich Shikdar</option><option value="Muhammad Shohan">Muhammad Shohan</option><option value="Mushire Elahi Tanzeem">Mushire Elahi Tanzeem</option><option value="Custom">Custom</option></select>
+            <div id="custom-contributor-name-box-mobile" style="display: none;"><label for="custom-contributor-name-mobile">Custom Contributor Name:</label><input type="text" id="custom-contributor-name-mobile" placeholder="Enter Custom Name"></div>
+            <label for="contributor-url-mobile">Contributor URL:</label><input id="contributor-url-mobile" type="text" required>
+            <label for="categories-mobile">Categories:</label><select id="categories-mobile" required><option disabled selected hidden value="">Select Category Name</option><option value="Logos">Logos</option><option value="3D Text">3D Text</option><option value="Posters">Posters</option><option value="Banners">Banners</option><option value="Images Jpg">Image Jpg</option><option value="Images Png">Image Png</option><option value="Thumbnails">Thumbnails</option><option value="Documentary">Documentary</option><option value="Mascots Logos">Mascots Logos</option><option value="Fonts">Fonts</option></select>
+            <label for="upload-date-mobile">Upload Date:</label><input type="text" id="upload-date-mobile" disabled>
+            <label for="related-tags-mobile">Related Tags:</label><input type="text" id="related-tags-mobile" placeholder="tag_name_1, tag_name_2" required>
+            <label for="search-description-mobile">Search Description:</label><textarea id="search-description-mobile" placeholder="Download the free thumbnail PLP file..." required rows="3"></textarea>
 
             <input type="submit" value="Generate Mobile Post">
         </form>
     </div>
 
     <div id="computer-form-section" class="form-section">
-        <h2 class="mt-4">Computer Files Generator</h2>
-        <form class="form" id="postFormComputer">
-             <label for="post-title-computer">Post Title:</label>
+        <h2 class="mt-4 border-bottom pb-2">Computer Files Generator</h2>
+        <form class="form" id="postFormComputer" onsubmit="handleFormSubmit(event, 'computer')">
+            <label for="post-title-computer">Post Title:</label>
             <input type="text" id="post-title-computer" placeholder="Enter Post Title" required>
-
             <label for="image-url-computer">Image URL:</label>
             <input type="text" id="image-url-computer" placeholder="Enter Image URL or Upload" required>
             <input type="file" id="image-upload-computer" accept="image/*">
             <button type="button" id="trigger-image-upload-computer" class="upload-button">Upload Image</button>
             <div id="image-upload-status-computer" class="status-message"></div>
-
             <label for="license-computer">License Type:</label>
             <select id="license-computer" required>
                 <option value="Premium">Premium</option>
                 <option value="Free">Free</option>
             </select>
-
             <div class="price-box" id="price-box-computer">
               <label for="price-computer">Price (BDT):</label>
               <input type="number" id="price-computer" value="50">
             </div>
-
-            <div class="download-link-box" id="download-link-box-computer" style="display: none;">
+            <div class="download-link-box" id="download-link-box-computer">
                 <label for="download-link-computer">Download Link:</label>
                 <input type="text" id="download-link-computer" placeholder="Enter Download Link or Upload">
                 <input type="file" id="file-upload-computer">
                 <button type="button" id="trigger-file-upload-computer" class="upload-button">Upload File</button>
                 <div id="file-upload-status-computer" class="status-message"></div>
+                <div id="file-size-warning-computer" class="warning-message">Your file size is too large (max 100MB). Upload it to Google Drive and enter the link in the box above.</div>
             </div>
+            <label for="formats-computer">File Formats:</label><select id="formats-computer" required><option disabled selected hidden value="">Select File Type</option><option value="PSD">PSD</option><option value="AI">AI</option><option value="EPS">EPS</option><option value="XD">XD</option><option value="FIG">FIG</option><option value="INDD">INDD</option><option value="SKETCH">SKETCH</option><option value="RAW">RAW</option><option value="ANY">ANY</option><option value="Fonts">Fonts</option></select>
+            <div id="font-type-box-computer" style="display: none;"><label for="font-type-computer">Font Type:</label><select id="font-type-computer"><option value="TTF">TTF</option><option value="OTF">OTF</option><option value="WOFF">WOFF</option><option value="EOT">EOT</option><option value="SVG">SVG</option></select></div>
+            <div id="software-field-wrapper-computer"><label for="software-computer">Software:</label><select id="software-computer" required><option disabled selected hidden value="">Select Software Name</option><option value="Adobe Photoshop">Adobe Photoshop</option><option value="Adobe Illustrator">Adobe Illustrator</option><option value="Adobe InDesign">Adobe InDesign</option><option value="Adobe Express">Adobe Express</option><option value="Photopea">Photopea</option><option value="Figma">Figma</option></select></div>
+            <div id="resolution-field-wrapper-computer"><label for="resolution-computer">Resolution:</label><select id="resolution-computer" required><option disabled selected hidden value="">Select Resolutions</option><option value="High Quality">High Quality</option><option value="Medium Quality">Medium Quality</option><option value="Low Quality">Low Quality</option></select></div>
+            <label for="file-size-input-computer">Size:</label><div class="resolution-container"><input type="number" id="file-size-input-computer" placeholder="Enter file size" required><select id="file-size-unit-computer" required><option value="MB">MB</option><option value="KB">KB</option></select></div>
+            <label for="contributor-computer">Contributor Name:</label><select id="contributor-computer" required><option disabled selected hidden value="">Select Your Name</option><option value="Yamin Ahmed">Yamin Ahmed</option><option value="Nafich Shikdar">Nafich Shikdar</option><option value="Muhammad Shohan">Muhammad Shohan</option><option value="Mushire Elahi Tanzeem">Mushire Elahi Tanzeem</option><option value="Custom">Custom</option></select>
+            <div id="custom-contributor-name-box-computer" style="display: none;"><label for="custom-contributor-name-computer">Custom Contributor Name:</label><input type="text" id="custom-contributor-name-computer" placeholder="Enter Custom Name"></div>
+            <label for="contributor-url-computer">Contributor URL:</label><input id="contributor-url-computer" type="text" required>
+            <label for="categories-computer">Categories:</label><select id="categories-computer" required><option disabled selected hidden value="">Select Category Name</option><option value="Logos">Logos</option><option value="3D Text">3D Text</option><option value="Posters">Posters</option><option value="Banners">Banners</option><option value="Images Jpg">Image Jpg</option><option value="Images Png">Image Png</option><option value="Thumbnails">Thumbnails</option><option value="Documentary">Documentary</option><option value="Mascots Logos">Mascots Logos</option><option value="Fonts">Fonts</option></select>
+            <label for="upload-date-computer">Upload Date:</label><input type="text" id="upload-date-computer" disabled>
+            <label for="related-tags-computer">Related Tags:</label><input type="text" id="related-tags-computer" placeholder="tag_name_1, tag_name_2" required>
+            <label for="search-description-computer">Search Description:</label><textarea id="search-description-computer" placeholder="Download the free thumbnail PSD file..." required rows="3"></textarea>
             
             <input type="submit" value="Generate Computer Post">
         </form>
     </div>
 
     <div class="generated-code-section" id="generatedCodeSection">
-      <h3 class="mt-5">Generated Post Code:</h3>
+      <h3 class="mt-5">Generated Blogger Post Code:</h3>
       <button id="copyButton">COPY</button>
       <pre><code id="outputCode"></code></pre>
     </div>
@@ -143,58 +173,11 @@
 
 <script>
 // --- Password Protection & Cookie Management ---
-const hashedPasswords = [
-  "fae5878d2bbca96a99d269cc2e0e4b6cf94a77df97b83d42fcac222ad32a9e75",
-  "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2"
-];
-
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-
-function getCookie(name) {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-
-async function checkPassword() {
-  const password = document.getElementById("password").value;
-  const hashedInput = await hashPassword(password);
-  if (hashedPasswords.includes(hashedInput)) {
-    setCookie("passwordProtected", "true", 30);
-    document.getElementById("protected-content").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-  } else {
-    alert("Incorrect password. Please try again.");
-  }
-}
-
-function checkCookie() {
-  if (getCookie("passwordProtected")) {
-    document.getElementById("protected-content").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-  }
-}
+const hashedPasswords = ["fae5878d2bbca96a99d269cc2e0e4b6cf94a77df97b83d42fcac222ad32a9e75", "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2"];
+async function hashPassword(password) { const e = new TextEncoder,t = e.encode(password),n = await crypto.subtle.digest("SHA-256",t);return Array.from(new Uint8Array(n)).map((e=>e.toString(16).padStart(2,"0"))).join("") }
+function setCookie(e,t,n){let o="";if(n){var a=new Date;a.setTime(a.getTime()+24*n*60*60*1e3),o="; expires="+a.toUTCString()}document.cookie=e+"="+(t||"")+o+"; path=/"}function getCookie(e){let t=e+"=";for(var n=document.cookie.split(";"),o=0;o<n.length;o++){for(var a=n[o];" "==a.charAt(0);)a=a.substring(1,a.length);if(0==a.indexOf(t))return a.substring(t.length,a.length)}return null}
+async function checkPassword(){const e=document.getElementById("password").value,t=await hashPassword(e);hashedPasswords.includes(t)?(setCookie("passwordProtected","true",30),document.getElementById("protected-content").style.display="block",document.getElementById("password-form").style.display="none"):alert("Incorrect password. Please try again.")}
+function checkCookie(){getCookie("passwordProtected")&&(document.getElementById("protected-content").style.display="block",document.getElementById("password-form").style.display="none")}
 
 // --- Secure GitHub Upload via Netlify Function ---
 async function uploadFileSecurely(file, pathInRepo, commitMessage) {
@@ -213,9 +196,7 @@ async function uploadFileSecurely(file, pathInRepo, commitMessage) {
                     }),
                 });
                 const result = await response.json();
-                if (!response.ok) {
-                    throw new Error(result.message || 'Upload via server failed.');
-                }
+                if (!response.ok) throw new Error(result.message || 'Upload via server failed.');
                 resolve(result);
             } catch (error) {
                 reject(error);
@@ -232,10 +213,9 @@ function resizeAndConvertImage(file, targetWidth, targetHeight, callback) {
         const img = new Image();
         img.onload = () => {
             const canvas = document.createElement('canvas');
-            canvas.width = targetWidth;
-            canvas.height = targetHeight;
+            canvas.width = targetWidth; canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, targetWidth, targetHeight);
             canvas.toBlob((blob) => {
                 if (blob) {
                     const resizedFile = new File([blob], file.name, { type: 'image/jpeg' });
@@ -250,111 +230,101 @@ function resizeAndConvertImage(file, targetWidth, targetHeight, callback) {
     reader.readAsDataURL(file);
 }
 
-function sanitizeFilename(filename) {
-    return filename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
-}
+function sanitizeFilename(filename) { return filename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, ''); }
 
 // --- File Upload Listeners Setup (Secure Version) ---
 function setupFileUploadListeners(type) {
-    // Image Upload
-    const imageUploadInput = document.getElementById(`image-upload-${type}`);
-    const triggerImageUploadButton = document.getElementById(`trigger-image-upload-${type}`);
-    const imageUrlInput = document.getElementById(`image-url-${type}`);
-    const imageUploadStatus = document.getElementById(`image-upload-status-${type}`);
-
-    triggerImageUploadButton.addEventListener('click', () => {
-        const file = imageUploadInput.files[0];
+    const commonUploadHandler = async (file, pathPrefix, statusDiv, inputToUpdate, isImage = false) => {
         if (!file) {
-            imageUploadStatus.textContent = 'Please select an image file first.';
-            imageUploadStatus.style.color = 'red';
+            statusDiv.textContent = 'Please select a file first.';
+            statusDiv.style.color = 'red';
             return;
         }
-        imageUploadStatus.textContent = 'Resizing and uploading...';
-        imageUploadStatus.style.color = 'blue';
+        statusDiv.textContent = 'Uploading...';
+        statusDiv.style.color = 'blue';
 
-        resizeAndConvertImage(file, 1280, 1280, async (resizedFile, error) => {
-            if (error) {
-                imageUploadStatus.textContent = `Error: ${error}`;
-                return;
-            }
-            const uniqueFilename = Date.now() + '-' + sanitizeFilename(resizedFile.name);
-            const pathInRepo = `images/${type}/${uniqueFilename}`;
-            const commitMessage = `Upload ${type} image: ${uniqueFilename}`;
-
+        const processAndUpload = async (fileToUpload) => {
+            const uniqueFilename = Date.now() + '-' + sanitizeFilename(fileToUpload.name);
+            const pathInRepo = `${pathPrefix}/${type}/${uniqueFilename}`;
+            const commitMessage = `Upload ${type} file: ${uniqueFilename}`;
             try {
-                const result = await uploadFileSecurely(resizedFile, pathInRepo, commitMessage);
-                imageUrlInput.value = result.rawUrl;
-                imageUploadStatus.textContent = 'Image uploaded successfully!';
-                imageUploadStatus.style.color = 'green';
+                const result = await uploadFileSecurely(fileToUpload, pathInRepo, commitMessage);
+                inputToUpdate.value = result.rawUrl;
+                statusDiv.textContent = 'Upload successful!';
+                statusDiv.style.color = 'green';
             } catch (uploadError) {
-                imageUploadStatus.textContent = `Upload failed: ${uploadError.message}`;
-                imageUploadStatus.style.color = 'red';
+                statusDiv.textContent = `Upload failed: ${uploadError.message}`;
+                statusDiv.style.color = 'red';
             }
-        });
+        };
+
+        if (isImage) {
+            statusDiv.textContent = 'Resizing and uploading...';
+            resizeAndConvertImage(file, 1280, 1280, (resizedFile, error) => {
+                if (error) {
+                    statusDiv.textContent = `Error: ${error}`;
+                    statusDiv.style.color = 'red';
+                } else {
+                    processAndUpload(resizedFile);
+                }
+            });
+        } else {
+            processAndUpload(file);
+        }
+    };
+
+    document.getElementById(`trigger-image-upload-${type}`).addEventListener('click', () => {
+        const file = document.getElementById(`image-upload-${type}`).files[0];
+        commonUploadHandler(file, 'images', document.getElementById(`image-upload-status-${type}`), document.getElementById(`image-url-${type}`), true);
     });
 
-    // Downloadable File Upload
-    const fileUploadInput = document.getElementById(`file-upload-${type}`);
-    const triggerFileUploadButton = document.getElementById(`trigger-file-upload-${type}`);
-    const downloadLinkInput = document.getElementById(`download-link-${type}`);
-    const fileUploadStatus = document.getElementById(`file-upload-status-${type}`);
-
-    if (triggerFileUploadButton) {
-        triggerFileUploadButton.addEventListener('click', async () => {
-            const file = fileUploadInput.files[0];
-            if (!file) {
-                fileUploadStatus.textContent = 'Please select a file first.';
-                fileUploadStatus.style.color = 'red';
-                return;
-            }
-            fileUploadStatus.textContent = 'Uploading file...';
-            fileUploadStatus.style.color = 'blue';
-
-            const uniqueFilename = Date.now() + '-' + sanitizeFilename(file.name);
-            const pathInRepo = `downloads/${type}/${uniqueFilename}`;
-            const commitMessage = `Upload ${type} free file: ${uniqueFilename}`;
-
-            try {
-                const result = await uploadFileSecurely(file, pathInRepo, commitMessage);
-                downloadLinkInput.value = result.rawUrl;
-                fileUploadStatus.textContent = 'File uploaded successfully!';
-                fileUploadStatus.style.color = 'green';
-            } catch (uploadError) {
-                fileUploadStatus.textContent = `Upload failed: ${uploadError.message}`;
-                fileUploadStatus.style.color = 'red';
-            }
+    if (document.getElementById(`trigger-file-upload-${type}`)) {
+        document.getElementById(`trigger-file-upload-${type}`).addEventListener('click', () => {
+            const file = document.getElementById(`file-upload-${type}`).files[0];
+            commonUploadHandler(file, 'downloads', document.getElementById(`file-upload-status-${type}`), document.getElementById(`download-link-${type}`), false);
         });
     }
 }
 
-// --- Form Logic ---
-function handleLicenseChange(type) {
-    const licenseField = document.getElementById(`license-${type}`);
-    const priceBox = document.getElementById(`price-box-${type}`);
-    const downloadLinkBox = document.getElementById(`download-link-box-${type}`);
-    
-    if (licenseField.value === 'Free') {
-        priceBox.style.display = 'none';
-        downloadLinkBox.style.display = 'block';
-    } else {
-        priceBox.style.display = 'block';
-        downloadLinkBox.style.display = 'none';
-    }
-}
 
+// --- Helper & Form Logic ---
+function generateVectorId() { return Math.floor(1000000000 + Math.random() * 9000000000); }
+function getCurrentDate() { const date = new Date(); const options = { year: 'numeric', month: 'long', day: 'numeric' }; return date.toLocaleDateString('en-US', options); }
+function updateContributorFields(type) { const contributorSelect = document.getElementById(`contributor-${type}`); const urlInput = document.getElementById(`contributor-url-${type}`); const customNameBox = document.getElementById(`custom-contributor-name-box-${type}`); const customNameInput = document.getElementById(`custom-contributor-name-${type}`); const predefinedUrls = { "Yamin Ahmed": "https://designlabofficial.blogspot.com/p/yamin.html", "Nafich Shikdar": "https://designlabofficial.blogspot.com/p/nafich-shikdar.html", "Muhammad Shohan": "https://designlabofficial.blogspot.com/p/muhammad-shohan.html", "Mushire Elahi Tanzeem": "https://designlabofficial.blogspot.com/p/mushire-elahi-tanzeem.html", }; const selectedValue = contributorSelect.value; if (selectedValue === "Custom") { customNameBox.style.display = "block"; customNameInput.required = true; urlInput.value = ""; urlInput.readOnly = false; } else { customNameBox.style.display = "none"; customNameInput.required = false; urlInput.value = predefinedUrls[selectedValue] || ""; urlInput.readOnly = true; } }
+function handleFormatChange(type) { const mainFormatSelect = document.getElementById(`formats-${type}`); const fontTypeBox = document.getElementById(`font-type-box-${type}`); const softwareWrapper = document.getElementById(`software-field-wrapper-${type}`); const resolutionWrapper = document.getElementById(`resolution-field-wrapper-${type}`); const categoriesSelect = document.getElementById(`categories-${type}`); if (mainFormatSelect.value === 'Fonts') { fontTypeBox.style.display = 'block'; if(document.getElementById(`font-type-${type}`)) document.getElementById(`font-type-${type}`).required = true; softwareWrapper.style.display = 'none'; if(document.getElementById(`software-${type}`)) document.getElementById(`software-${type}`).required = false; resolutionWrapper.style.display = 'none'; if(document.getElementById(`resolution-${type}`)) document.getElementById(`resolution-${type}`).required = false; if (categoriesSelect) categoriesSelect.value = 'Fonts'; } else { fontTypeBox.style.display = 'none'; if(document.getElementById(`font-type-${type}`)) document.getElementById(`font-type-${type}`).required = false; softwareWrapper.style.display = 'block'; if(document.getElementById(`software-${type}`)) document.getElementById(`software-${type}`).required = true; resolutionWrapper.style.display = 'block'; if(document.getElementById(`resolution-${type}`)) document.getElementById(`resolution-${type}`).required = true; if (categoriesSelect && categoriesSelect.value === 'Fonts') categoriesSelect.value = ""; } autoPopulateFields(type); }
+function handleLicenseChange(type) { const licenseField = document.getElementById(`license-${type}`); const priceBox = document.getElementById(`price-box-${type}`); const downloadLinkBox = document.getElementById(`download-link-box-${type}`); const downloadLinkInput = document.getElementById(`download-link-${type}`); if (licenseField.value === 'Free') { priceBox.style.display = 'none'; downloadLinkBox.style.display = 'block'; if(downloadLinkInput) downloadLinkInput.required = true; } else { priceBox.style.display = 'block'; downloadLinkBox.style.display = 'none'; if(downloadLinkInput) downloadLinkInput.required = false; } autoPopulateFields(type); }
+function autoPopulateFields(type) { const postTitleInput = document.getElementById(`post-title-${type}`); const postTitle = postTitleInput.value; if (!postTitle.trim()) return; const licenseValue = document.getElementById(`license-${type}`).value; const mainFormatSelect = document.getElementById(`formats-${type}`); const categoryValue = document.getElementById(`categories-${type}`).value; let actualFormatValue = mainFormatSelect.value; if (actualFormatValue === 'Fonts') { actualFormatValue = document.getElementById(`font-type-${type}`).value; } const relatedTagsInput = document.getElementById(`related-tags-${type}`); const searchDescriptionInput = document.getElementById(`search-description-${type}`); const titleTagsArray = postTitle.toLowerCase().replace(/-/g, ' ').replace(/[^a-z0-9\s]/gi, '').split(/\s+/).filter(Boolean); let defaultDesignTags = ["graphic design", "template", "creative", "design asset", "downloadable", "digital art", licenseValue.toLowerCase()]; if (type === 'mobile') defaultDesignTags.push("mobile design"); else defaultDesignTags.push("computer design", "vector", "raster", "source file"); if (actualFormatValue) { defaultDesignTags.push(actualFormatValue.toLowerCase()); defaultDesignTags.push(mainFormatSelect.value === 'Fonts' ? "font" : actualFormatValue.toLowerCase() + " file"); } if (categoryValue) defaultDesignTags.push(categoryValue.toLowerCase()); const combinedTagsArray = [...new Set([...titleTagsArray, ...defaultDesignTags])]; relatedTagsInput.value = combinedTagsArray.join(', '); let prefix = `Download the ${licenseValue.toLowerCase()} `; let formatText = actualFormatValue ? actualFormatValue + " " : ""; let categoryText = (categoryValue && categoryValue !== "Fonts") ? " for " + categoryValue.toLowerCase() : (mainFormatSelect.value === 'Fonts' ? " font" : ""); let fileOrFontText = mainFormatSelect.value === 'Fonts' ? "font" : "file"; const description = `${prefix}${postTitle} ${formatText}${fileOrFontText}${categoryText}, perfect for your graphic design projects.`; searchDescriptionInput.value = description; }
 function handleFormSubmit(e, type) {
     e.preventDefault();
     const postTitle = document.getElementById(`post-title-${type}`).value;
     const imageUrl = document.getElementById(`image-url-${type}`).value;
-    // ... (rest of your form data gathering logic) ...
+    const license = document.getElementById(`license-${type}`).value;
+    const price = license === 'Premium' ? document.getElementById(`price-${type}`).value + ' BDT' : '00 BDT';
+    const mainFormatSelect = document.getElementById(`formats-${type}`);
+    let selectedMainFormat = mainFormatSelect.value; let formatsValueForDisplay = selectedMainFormat;
+    let softwareValue = ""; let resolutionValue = ""; let softwareDetailHTML = ""; let resolutionDetailHTML = "";
+    if (selectedMainFormat === 'Fonts') { formatsValueForDisplay = document.getElementById(`font-type-${type}`).value; } else { softwareValue = document.getElementById(`software-${type}`).value; resolutionValue = document.getElementById(`resolution-${type}`).value; softwareDetailHTML = `<div class="plp-detail"><div class="icon-box"><i class="bi bi-laptop"></i></div><div class="detail-text"><span class="category">Software</span><span class="value">${softwareValue}</span></div></div>`; resolutionDetailHTML = `<div class="plp-detail"><div class="icon-box"><i class="bi bi-aspect-ratio"></i></div><div class="detail-text"><span class="category">Resolution</span><span class="value">${resolutionValue}</span></div></div>`; }
+    const fileSize = document.getElementById(`file-size-input-${type}`).value + ' ' + document.getElementById(`file-size-unit-${type}`).value;
+    let contributor = document.getElementById(`contributor-${type}`).value; if (contributor === "Custom") { contributor = document.getElementById(`custom-contributor-name-${type}`).value; }
+    const contributorUrl = document.getElementById(`contributor-url-${type}`).value;
+    const categories = document.getElementById(`categories-${type}`).value;
+    const uploadDate = document.getElementById(`upload-date-${type}`).value;
+    const relatedTags = document.getElementById(`related-tags-${type}`).value;
+    const searchDescription = document.getElementById(`search-description-${type}`).value;
+    const downloadLink = license === 'Free' ? document.getElementById(`download-link-${type}`).value : '';
+    const vectorId = generateVectorId();
+    let buttonCode;
+    if (license === 'Free') { if (!downloadLink) { alert("Please provide a Download Link for Free items."); return; } buttonCode = `<a class='button safeL' href='${downloadLink}' target='_blank' rel='noopener noreferrer'><i class='bi bi-download'></i>Free Download</a>`; } else { buttonCode = `<a class='button' href='/p/buy-design.html?victorId=${vectorId}&taka=${price.replace(' BDT', '')}&title=${encodeURIComponent(postTitle)}'><i class='bi bi-cart-check-fill'></i>Buy Now!</a>`; }
+    
+    let specificContent = ""; // Your detailed specificContent logic goes here...
+    const commonFontContent = `<img class='pageImg' alt="How to Download Fonts" src="https://cloud.plpfiles.com/assets/images/download.svg"/><p>Welcome to our website...[rest of font content]...</p>`;
+    if (type === "mobile") {
+        specificContent = (selectedMainFormat === 'Fonts') ? commonFontContent : `<div style='text-align:center'><p>Mobile specific content...</p></div>`;
+    } else if (type === "computer") {
+        specificContent = (selectedMainFormat === 'Fonts') ? commonFontContent : `<div style='text-align:center'><p>Computer specific content...</p></div>`;
+    }
 
-    const generatedCode = `
-<div class="post-container">
-    <img src="${imageUrl}" alt="${postTitle}" style="width:100%; max-width:600px;">
-    <h2>${postTitle}</h2>
-    <p>More details here...</p>
-    </div>`;
-
+    const generatedCode = `\n<meta name="keywords" content="${relatedTags}">\n<meta name="description" content="${searchDescription}" />\n<div hidden aria-hidden='true'>${relatedTags}</div>\n<div class="flex-container">\n    <div class="image-section"><div class='img-view separator'><img alt='${postTitle}' src='${imageUrl}'/></div></div>\n    <div class="details-section">\n        <div class="plp-details-container">\n            ${softwareDetailHTML}\n            ${resolutionDetailHTML}\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-tag-fill"></i></div><div class="detail-text"><span class="category">Price</span><span class="value">${price}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-file-earmark-zip-fill"></i></div><div class="detail-text"><span class="category">Size</span><span class="value">${fileSize}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-person-fill"></i></div><div class="detail-text"><span class="category">Contributor</span><span class="value"><a href='${contributorUrl}'>${contributor}</a></span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-bookmark-fill"></i></div><div class="detail-text"><span class="category">Category</span><span class="value"><a href="/search/label/${categories}">${categories}</a></span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-file-earmark-font-fill"></i></div><div class="detail-text"><span class="category">Format</span><span class="value">${formatsValueForDisplay}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-calendar-check-fill"></i></div><div class="detail-text"><span class="category">Date</span><span class="value">${uploadDate}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-patch-check-fill"></i></div><div class="detail-text"><span class="category">License</span><span class="value">${license}</span></div></div>\n            <div class="plp-detail"><div class="icon-box"><i class="bi bi-upc"></i></div><div class="detail-text"><span class="category">Vector ID</span><span class="value">${vectorId}</span></div></div>\n        </div>\n        <div class="download-box">${buttonCode}</div>\n    </div>\n</div>\n${specificContent}\n`;
     document.getElementById('outputCode').textContent = generatedCode.trim();
     document.getElementById('generatedCodeSection').style.display = 'block';
     document.getElementById('copyButton').style.display = 'inline-block';
@@ -362,13 +332,20 @@ function handleFormSubmit(e, type) {
 
 // --- Initialization ---
 function initializeForm(type) {
-    document.getElementById(`postForm${type.charAt(0).toUpperCase() + type.slice(1)}`)
-        .addEventListener('submit', (e) => handleFormSubmit(e, type));
-    
-    document.getElementById(`license-${type}`)
-        .addEventListener('change', () => handleLicenseChange(type));
-
+    document.getElementById(`upload-date-${type}`).value = getCurrentDate();
+    updateContributorFields(type);
+    document.getElementById(`contributor-${type}`).addEventListener('change', () => updateContributorFields(type));
+    const licenseField = document.getElementById(`license-${type}`);
+    licenseField.addEventListener('change', () => handleLicenseChange(type));
     handleLicenseChange(type);
+    const formatsField = document.getElementById(`formats-${type}`);
+    formatsField.addEventListener('change', () => handleFormatChange(type));
+    handleFormatChange(type);
+    document.getElementById(`post-title-${type}`).addEventListener('input', () => autoPopulateFields(type));
+    ['license', 'formats', 'font-type', 'categories'].forEach(id => {
+        const el = document.getElementById(`${id}-${type}`);
+        if (el) el.addEventListener('change', () => autoPopulateFields(type));
+    });
     setupFileUploadListeners(type);
 }
 
@@ -376,10 +353,10 @@ document.getElementById('file-type-selector').addEventListener('change', functio
     const selectedType = this.value;
     const mobileForm = document.getElementById('mobile-form-section');
     const computerForm = document.getElementById('computer-form-section');
-    
+    document.getElementById('generatedCodeSection').style.display = 'none';
+    document.getElementById('copyButton').style.display = 'none';
     mobileForm.style.display = 'none';
     computerForm.style.display = 'none';
-
     if (selectedType === 'mobile') {
         mobileForm.style.display = 'block';
         initializeForm('mobile');
@@ -397,11 +374,9 @@ document.getElementById("copyButton").addEventListener("click", function () {
     });
 });
 
-// Run on page load
 window.onload = function () {
   checkCookie();
 };
-
 </script>
 </body>
 </html>
